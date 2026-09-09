@@ -1,10 +1,10 @@
 package main;
 
-import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
- * Clase principal del TDA que administra la logica del proyecto,
- * arreglos unidimensionales y matrices.
+ * Clase principal del TDA que administra la lógica del proyecto,
+ * arreglos unidimensionales y matrices usando JOptionPane.
  */
 public class GestionBiblioteca {
 
@@ -16,13 +16,10 @@ public class GestionBiblioteca {
     // Valor 1 = Libro Disponible, Valor 0 = Libro Prestado / Ausente
     private int[][] matrizEstantes;
 
-    private Scanner scanner;
-
     public GestionBiblioteca(int capacidadUsuarios, int filasEstantes, int columnasSecciones) {
         this.arregloUsuarios = new Usuario[capacidadUsuarios];
         this.contadorUsuarios = 0;
         this.matrizEstantes = new int[filasEstantes][columnasSecciones];
-        this.scanner = new Scanner(System.in);
         
         // Inicializar la matriz con disponibilidad por defecto (1 = disponible)
         inicializarMatriz();
@@ -40,114 +37,185 @@ public class GestionBiblioteca {
     }
 
     /**
-     * Registrar un usuario ingresado desde teclado en el arreglo unidimensional.
+     * Registrar un usuario ingresado mediante JOptionPane en el arreglo unidimensional.
      */
     public void registrarUsuario() {
         if (contadorUsuarios >= arregloUsuarios.length) {
-            System.out.println("-> Error: El registro de usuarios esta lleno.");
+            JOptionPane.showMessageDialog(null, 
+                    "Error: El registro de usuarios está lleno.", 
+                    "Capacidad Máxima", 
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        System.out.print("Ingrese ID del usuario: ");
-        String id = scanner.nextLine();
-        System.out.print("Ingrese Nombre del usuario: ");
-        String nombre = scanner.nextLine();
+        String id = JOptionPane.showInputDialog(null, 
+                "Ingrese el ID del usuario:", 
+                "Registrar Usuario", 
+                JOptionPane.QUESTION_MESSAGE);
+        
+        if (id == null || id.trim().isEmpty()) return;
+
+        String nombre = JOptionPane.showInputDialog(null, 
+                "Ingrese el Nombre del usuario:", 
+                "Registrar Usuario", 
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (nombre == null || nombre.trim().isEmpty()) return;
 
         arregloUsuarios[contadorUsuarios] = new Usuario(id, nombre);
         contadorUsuarios++;
-        System.out.println("-> Usuario registrado exitosamente en el indice " + (contadorUsuarios - 1) + ".");
+
+        JOptionPane.showMessageDialog(null, 
+                "Usuario registrado exitosamente en el índice [" + (contadorUsuarios - 1) + "].", 
+                "Registro Exitoso", 
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
-     * Muestra el arreglo unidimensional de usuarios almacenado.
+     * Muestra el arreglo unidimensional de usuarios almacenado en una ventana emergente.
      */
     public void mostrarUsuarios() {
-        System.out.println("\n--- LISTA DE USUARIOS REGISTRADOS ---");
         if (contadorUsuarios == 0) {
-            System.out.println("No hay usuarios registrados actualmente.");
+            JOptionPane.showMessageDialog(null, 
+                    "No hay usuarios registrados actualmente.", 
+                    "Lista Vacía", 
+                    JOptionPane.INFORMATION_MESSAGE);
             return;
         }
+
+        StringBuilder reporte = new StringBuilder("--- LISTA DE USUARIOS REGISTRADOS ---\n\n");
         for (int i = 0; i < contadorUsuarios; i++) {
-            System.out.println("Indice [" + i + "] -> " + arregloUsuarios[i]);
+            reporte.append("Índice [").append(i).append("] -> ").append(arregloUsuarios[i]).append("\n");
         }
+
+        JOptionPane.showMessageDialog(null, 
+                reporte.toString(), 
+                "Usuarios Registrados", 
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
-     * Operacion de Busqueda 1: Búsqueda secuencial en el arreglo unidimensional por ID.
+     * Operación de Búsqueda 1: Búsqueda secuencial en el arreglo unidimensional por ID.
      */
     public void buscarUsuarioPorId() {
-        System.out.print("Ingrese el ID del usuario a buscar: ");
-        String idBuscado = scanner.nextLine();
+        String idBuscado = JOptionPane.showInputDialog(null, 
+                "Ingrese el ID del usuario a buscar:", 
+                "Buscar Usuario", 
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (idBuscado == null || idBuscado.trim().isEmpty()) return;
+
         boolean encontrado = false;
 
         for (int i = 0; i < contadorUsuarios; i++) {
             if (arregloUsuarios[i].getIdUsuario().equalsIgnoreCase(idBuscado)) {
-                System.out.println("-> Usuario encontrado en el indice " + i + ": " + arregloUsuarios[i]);
+                JOptionPane.showMessageDialog(null, 
+                        "Usuario encontrado en el índice [" + i + "]:\n" + arregloUsuarios[i], 
+                        "Búsqueda Exitosa", 
+                        JOptionPane.INFORMATION_MESSAGE);
                 encontrado = true;
                 break;
             }
         }
 
         if (!encontrado) {
-            System.out.println("-> No se encontro ningun usuario con el ID especificado.");
+            JOptionPane.showMessageDialog(null, 
+                    "No se encontró ningún usuario con el ID especificado.", 
+                    "Sin Resultados", 
+                    JOptionPane.WARNING_MESSAGE);
         }
     }
 
     /**
-     * Funcionalidad propia: Muestra la matriz de manera visual en consola.
+     * Funcionalidad propia: Muestra la matriz de manera visual en formato gráfico dentro de JOptionPane.
      */
     public void mostrarMapaEstantes() {
-        System.out.println("\n--- MAPA DE ESTANTES Y SECCIONES (MATRIZ) ---");
-        System.out.print("           ");
+        StringBuilder mapa = new StringBuilder("--- MAPA DE ESTANTES Y SECCIONES (MATRIZ) ---\n\n");
+        
+        mapa.append("              ");
         for (int j = 0; j < matrizEstantes[0].length; j++) {
-            System.out.print("Sección " + j + "  ");
+            mapa.append("Sec ").append(j).append("    ");
         }
-        System.out.println();
+        mapa.append("\n");
 
         for (int i = 0; i < matrizEstantes.length; i++) {
-            System.out.print("Estante " + i + " | ");
+            mapa.append("Estante ").append(i).append(" | ");
             for (int j = 0; j < matrizEstantes[i].length; j++) {
                 if (matrizEstantes[i][j] == 1) {
-                    System.out.print("  [ O ]    "); // O = Disponible
+                    mapa.append(" [ O ]   "); // O = Disponible
                 } else {
-                    System.out.print("  [ X ]    "); // X = Prestado
+                    mapa.append(" [ X ]   "); // X = Prestado
                 }
             }
-            System.out.println();
+            mapa.append("\n");
         }
-        System.out.println("Convencion: [ O ] = Disponible | [ X ] = Prestado");
+
+        mapa.append("\nConvención:\n [ O ] = Disponible\n [ X ] = Prestado");
+
+        JOptionPane.showMessageDialog(null, 
+                mapa.toString(), 
+                "Mapa Físico de la Biblioteca", 
+                JOptionPane.PLAIN_MESSAGE);
     }
 
     /**
-     * Operacion de Actualizacion: Modifica el estado en la matriz (1 a 0 o viceversa).
+     * Operación de Actualización: Modifica el estado en la matriz (1 a 0 o viceversa).
      */
     public void cambiarEstadoPrestamo() {
-        System.out.print("Ingrese el numero de Estante (Fila 0 a " + (matrizEstantes.length - 1) + "): ");
-        int fila = scanner.nextInt();
-        System.out.print("Ingrese el numero de Seccion (Columna 0 a " + (matrizEstantes[0].length - 1) + "): ");
-        int columna = scanner.nextInt();
-        scanner.nextLine(); // Limpiar buffer
+        try {
+            String inputFila = JOptionPane.showInputDialog(null, 
+                    "Ingrese el número de Estante (Fila 0 a " + (matrizEstantes.length - 1) + "):", 
+                    "Actualizar Préstamo", 
+                    JOptionPane.QUESTION_MESSAGE);
+            if (inputFila == null) return;
+            int fila = Integer.parseInt(inputFila);
 
-        if (fila >= 0 && fila < matrizEstantes.length && columna >= 0 && columna < matrizEstantes[0].length) {
-            System.out.println("Estado actual en [" + fila + "][" + columna + "]: " + 
-                    (matrizEstantes[fila][columna] == 1 ? "Disponible" : "Prestado"));
-            System.out.print("Seleccione nuevo estado (1 = Disponible, 0 = Prestado): ");
-            int nuevoEstado = scanner.nextInt();
-            scanner.nextLine();
+            String inputColumna = JOptionPane.showInputDialog(null, 
+                    "Ingrese el número de Sección (Columna 0 a " + (matrizEstantes[0].length - 1) + "):", 
+                    "Actualizar Préstamo", 
+                    JOptionPane.QUESTION_MESSAGE);
+            if (inputColumna == null) return;
+            int columna = Integer.parseInt(inputColumna);
 
-            if (nuevoEstado == 0 || nuevoEstado == 1) {
-                matrizEstantes[fila][columna] = nuevoEstado;
-                System.out.println("-> Estado actualizado correctamente.");
+            if (fila >= 0 && fila < matrizEstantes.length && columna >= 0 && columna < matrizEstantes[0].length) {
+                String estadoActual = (matrizEstantes[fila][columna] == 1) ? "Disponible" : "Prestado";
+                
+                String inputNuevo = JOptionPane.showInputDialog(null, 
+                        "Estado actual en [" + fila + "][" + columna + "]: " + estadoActual + 
+                        "\n\nIngrese el nuevo estado:\n1 = Disponible\n0 = Prestado", 
+                        "Modificar Estado", 
+                        JOptionPane.QUESTION_MESSAGE);
+                if (inputNuevo == null) return;
+                int nuevoEstado = Integer.parseInt(inputNuevo);
+
+                if (nuevoEstado == 0 || nuevoEstado == 1) {
+                    matrizEstantes[fila][columna] = nuevoEstado;
+                    JOptionPane.showMessageDialog(null, 
+                            "Estado actualizado correctamente a: " + (nuevoEstado == 1 ? "Disponible" : "Prestado"), 
+                            "Actualización Exitosa", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, 
+                            "Estado inválido. Debe ingresar 1 o 0.", 
+                            "Error de Entrada", 
+                            JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                System.out.println("-> Estado invalido. Debe ingresar 1 o 0.");
+                JOptionPane.showMessageDialog(null, 
+                        "Coordenadas fuera de rango.", 
+                        "Error de Rango", 
+                        JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            System.out.println("-> Coordenadas fuera de rango.");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, 
+                    "Debe ingresar un valor numérico válido.", 
+                    "Error de Formato", 
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
     /**
-     * Calculo o Analisis 1: Calcula el total de libros disponibles y prestados y su porcentaje.
+     * Cálculo o Análisis 1: Calcula el total de libros disponibles y prestados y su porcentaje.
      */
     public void calcularEstadisticasGlobales() {
         int totalDisponibles = 0;
@@ -168,14 +236,21 @@ public class GestionBiblioteca {
         double porcentajeDisponibles = ((double) totalDisponibles / totalCasillas) * 100;
         double porcentajePrestados = ((double) totalPrestados / totalCasillas) * 100;
 
-        System.out.println("\n--- ANALISIS 1: ESTADISTICAS GENERALES DE LA BIBLIOTECA ---");
-        System.out.println("Total capacidad fisica: " + totalCasillas + " espacios.");
-        System.out.println("Libros disponibles: " + totalDisponibles + " (" + String.format("%.2f", porcentajeDisponibles) + "%)");
-        System.out.println("Libros prestados: " + totalPrestados + " (" + String.format("%.2f", porcentajePrestados) + "%)");
+        StringBuilder analisis = new StringBuilder("--- ANÁLISIS 1: ESTADÍSTICAS GENERALES ---\n\n");
+        analisis.append("Capacidad física total: ").append(totalCasillas).append(" espacios.\n");
+        analisis.append("Libros disponibles: ").append(totalDisponibles)
+                .append(" (").append(String.format("%.2f", porcentajeDisponibles)).append("%)\n");
+        analisis.append("Libros prestados: ").append(totalPrestados)
+                .append(" (").append(String.format("%.2f", porcentajePrestados)).append("%)\n");
+
+        JOptionPane.showMessageDialog(null, 
+                analisis.toString(), 
+                "Análisis Estadístico", 
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
-     * Calculo o Analisis 2: Determina la fila (Estante) con mayor numero de libros disponibles.
+     * Cálculo o Análisis 2: Determina la fila (Estante) con mayor número de libros disponibles.
      */
     public void estanteConMayorDisponibilidad() {
         int estanteMayor = -1;
@@ -194,8 +269,13 @@ public class GestionBiblioteca {
             }
         }
 
-        System.out.println("\n--- ANALISIS 2: ESTANTE MAS DESOCUPADO / DISPONIBLE ---");
-        System.out.println("El estante (fila) con mas libros disponibles es el Estante " + estanteMayor +
-                           " con un total de " + maxDisponibles + " libros disponibles.");
+        StringBuilder analisis = new StringBuilder("--- ANÁLISIS 2: ESTANTE MÁS DESOCUPADO ---\n\n");
+        analisis.append("El estante con mayor número de libros disponibles es el Estante ").append(estanteMayor)
+                .append(" con un total de ").append(maxDisponibles).append(" ejemplares disponibles.");
+
+        JOptionPane.showMessageDialog(null, 
+                analisis.toString(), 
+                "Estante con Mayor Disponibilidad", 
+                JOptionPane.INFORMATION_MESSAGE);
     }
 }
