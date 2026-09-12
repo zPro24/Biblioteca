@@ -66,7 +66,7 @@ public class GestionBiblioteca {
         contadorUsuarios++;
 
         JOptionPane.showMessageDialog(null, 
-                "Usuario registrado exitosamente en el índice [" + (contadorUsuarios - 1) + "].", 
+                "Usuario registrado exitosamente en el indice [" + (contadorUsuarios - 1) + "].", 
                 "Registro Exitoso", 
                 JOptionPane.INFORMATION_MESSAGE);
     }
@@ -78,7 +78,7 @@ public class GestionBiblioteca {
         if (contadorUsuarios == 0) {
             JOptionPane.showMessageDialog(null, 
                     "No hay usuarios registrados actualmente.", 
-                    "Lista Vacía", 
+                    "Lista Vacia", 
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -111,7 +111,7 @@ public class GestionBiblioteca {
             if (arregloUsuarios[i].getIdUsuario().equalsIgnoreCase(idBuscado)) {
                 JOptionPane.showMessageDialog(null, 
                         "Usuario encontrado en el índice [" + i + "]:\n" + arregloUsuarios[i], 
-                        "Búsqueda Exitosa", 
+                        "Busqueda Exitosa", 
                         JOptionPane.INFORMATION_MESSAGE);
                 encontrado = true;
                 break;
@@ -120,7 +120,7 @@ public class GestionBiblioteca {
 
         if (!encontrado) {
             JOptionPane.showMessageDialog(null, 
-                    "No se encontró ningún usuario con el ID especificado.", 
+                    "No se encontro ningún usuario con el ID especificado.", 
                     "Sin Resultados", 
                     JOptionPane.WARNING_MESSAGE);
         }
@@ -159,20 +159,20 @@ public class GestionBiblioteca {
     }
 
     /**
-     * Operación de Actualización: Modifica el estado en la matriz (1 a 0 o viceversa).
+     * Operacion de Actualizacioon: Modifica el estado en la matriz (1 a 0 o viceversa).
      */
     public void cambiarEstadoPrestamo() {
         try {
             String inputFila = JOptionPane.showInputDialog(null, 
-                    "Ingrese el número de Estante (Fila 0 a " + (matrizEstantes.length - 1) + "):", 
-                    "Actualizar Préstamo", 
+                    "Ingrese el numero de Estante (Fila 0 a " + (matrizEstantes.length - 1) + "):", 
+                    "Actualizar Prestamo", 
                     JOptionPane.QUESTION_MESSAGE);
             if (inputFila == null) return;
             int fila = Integer.parseInt(inputFila);
 
             String inputColumna = JOptionPane.showInputDialog(null, 
                     "Ingrese el número de Sección (Columna 0 a " + (matrizEstantes[0].length - 1) + "):", 
-                    "Actualizar Préstamo", 
+                    "Actualizar Prestamo", 
                     JOptionPane.QUESTION_MESSAGE);
             if (inputColumna == null) return;
             int columna = Integer.parseInt(inputColumna);
@@ -208,14 +208,14 @@ public class GestionBiblioteca {
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, 
-                    "Debe ingresar un valor numérico válido.", 
+                    "Debe ingresar un valor numerico valido.", 
                     "Error de Formato", 
                     JOptionPane.ERROR_MESSAGE);
         }
     }
 
     /**
-     * Cálculo o Análisis 1: Calcula el total de libros disponibles y prestados y su porcentaje.
+     * Calculo o Análisis 1: Calcula el total de libros disponibles y prestados y su porcentaje.
      */
     public void calcularEstadisticasGlobales() {
         int totalDisponibles = 0;
@@ -236,8 +236,8 @@ public class GestionBiblioteca {
         double porcentajeDisponibles = ((double) totalDisponibles / totalCasillas) * 100;
         double porcentajePrestados = ((double) totalPrestados / totalCasillas) * 100;
 
-        StringBuilder analisis = new StringBuilder("--- ANÁLISIS 1: ESTADÍSTICAS GENERALES ---\n\n");
-        analisis.append("Capacidad física total: ").append(totalCasillas).append(" espacios.\n");
+        StringBuilder analisis = new StringBuilder("--- ANALISIS 1: ESTADISTICAS GENERALES ---\n\n");
+        analisis.append("Capacidad fisica total: ").append(totalCasillas).append(" espacios.\n");
         analisis.append("Libros disponibles: ").append(totalDisponibles)
                 .append(" (").append(String.format("%.2f", porcentajeDisponibles)).append("%)\n");
         analisis.append("Libros prestados: ").append(totalPrestados)
@@ -245,7 +245,7 @@ public class GestionBiblioteca {
 
         JOptionPane.showMessageDialog(null, 
                 analisis.toString(), 
-                "Análisis Estadístico", 
+                "Analisis Estadistico", 
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -269,8 +269,8 @@ public class GestionBiblioteca {
             }
         }
 
-        StringBuilder analisis = new StringBuilder("--- ANÁLISIS 2: ESTANTE MÁS DESOCUPADO ---\n\n");
-        analisis.append("El estante con mayor número de libros disponibles es el Estante ").append(estanteMayor)
+        StringBuilder analisis = new StringBuilder("--- ANALISIS 2: ESTANTE MÁS DESOCUPADO ---\n\n");
+        analisis.append("El estante con mayor numero de libros disponibles es el Estante ").append(estanteMayor)
                 .append(" con un total de ").append(maxDisponibles).append(" ejemplares disponibles.");
 
         JOptionPane.showMessageDialog(null, 

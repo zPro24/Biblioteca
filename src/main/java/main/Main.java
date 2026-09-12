@@ -12,22 +12,22 @@ public class Main {
         GestionBiblioteca biblioteca = new GestionBiblioteca(5, 4, 5);
 
         String menu = "=============================================\n"
-                    + "    SISTEMA DE GESTIÓN DE BIBLIOTECA (UTS)    \n"
+                    + "    SISTEMA DE GESTION DE BIBLIOTECA (UTS)    \n"
                     + "=============================================\n"
                     + "1. Registrar nuevo usuario (Arreglo 1D)\n"
                     + "2. Mostrar usuarios registrados\n"
                     + "3. Buscar usuario por ID\n"
                     + "4. Mostrar mapa visual de estantes (Matriz 2D)\n"
-                    + "5. Actualizar estado de préstamo (Matriz 2D)\n"
-                    + "6. Análisis 1: Estadísticas globales de disponibilidad\n"
-                    + "7. Análisis 2: Estante con mayor disponibilidad\n"
+                    + "5. Actualizar estado de prestamo (Matriz 2D)\n"
+                    + "6. Analisis 1: Estadisticas globales de disponibilidad\n"
+                    + "7. Analisis 2: Estante con mayor disponibilidad\n"
                     + "0. Salir del programa\n\n"
-                    + "Seleccione una opción:";
+                    + "Seleccione una opcion:";
 
         int opcion = -1;
 
         do {
-            String input = JOptionPane.showInputDialog(null, menu, "Menú Principal", JOptionPane.QUESTION_MESSAGE);
+            String input = JOptionPane.showInputDialog(null, menu, "Menu Principal", JOptionPane.QUESTION_MESSAGE);
 
             if (input == null) {
                 // Si presiona cancelar o cierra la ventana, sale del programa
@@ -65,13 +65,13 @@ public class Main {
                 case 0:
                     JOptionPane.showMessageDialog(null, 
                             "Saliendo del sistema...", 
-                            "Desconexión", 
+                            "Desconexion", 
                             JOptionPane.INFORMATION_MESSAGE);
                     break;
                 default:
                     JOptionPane.showMessageDialog(null, 
-                            "Opción inválida. Intente de nuevo.", 
-                            "Error de Selección", 
+                            "Opcion invalida. Intente de nuevo.", 
+                            "Error de Seleccion", 
                             JOptionPane.ERROR_MESSAGE);
             }
         } while (opcion != 0);
