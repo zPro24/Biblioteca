@@ -36,9 +36,25 @@ public class GestionBiblioteca {
         }
     }
 
+        /**
+     * Verifica si ya existe un usuario registrado con el mismo ID.
+     * @param idBuscado ID ingresado desde el teclado
+     * @return true si el ID ya está registrado, false de lo contrario
+     */
+    private boolean existeUsuarioPorId(String idBuscado) {
+        for (int i = 0; i < contadorUsuarios; i++) {
+            if (arregloUsuarios[i] != null && 
+                arregloUsuarios[i].getIdUsuario().equalsIgnoreCase(idBuscado.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Registrar un usuario ingresado mediante JOptionPane en el arreglo unidimensional.
      */
+
     public void registrarUsuario() {
         if (contadorUsuarios >= arregloUsuarios.length) {
             JOptionPane.showMessageDialog(null, 
@@ -47,30 +63,40 @@ public class GestionBiblioteca {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+    
         String id = JOptionPane.showInputDialog(null, 
                 "Ingrese el ID del usuario:", 
                 "Registrar Usuario", 
                 JOptionPane.QUESTION_MESSAGE);
         
         if (id == null || id.trim().isEmpty()) return;
-
+        
+        // VALIDACIÓN DE ID DUPLICADO
+        if (existeUsuarioPorId(id)) {
+            JOptionPane.showMessageDialog(null, 
+                    "Error: Ya existe un usuario registrado con el ID '" + id.trim() + "'.", 
+                    "ID Duplicado", 
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+    
         String nombre = JOptionPane.showInputDialog(null, 
                 "Ingrese el Nombre del usuario:", 
                 "Registrar Usuario", 
                 JOptionPane.QUESTION_MESSAGE);
-
+        
         if (nombre == null || nombre.trim().isEmpty()) return;
-
-        arregloUsuarios[contadorUsuarios] = new Usuario(id, nombre);
+        
+        arregloUsuarios[contadorUsuarios] = new Usuario(id.trim(), nombre.trim());
         contadorUsuarios++;
-
+        
         JOptionPane.showMessageDialog(null, 
-                "Usuario registrado exitosamente en el indice [" + (contadorUsuarios - 1) + "].", 
+                "Usuario registrado exitosamente en el índice [" + (contadorUsuarios - 1) + "].", 
                 "Registro Exitoso", 
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
+    
     /**
      * Muestra el arreglo unidimensional de usuarios almacenado en una ventana emergente.
      */
